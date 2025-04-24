@@ -167,30 +167,35 @@ So ultimately:
 - You’re turning unstructured/semi-clean data into a clean, reliable source layer that the rest of your models can trust.
 
 ### 3.3 FiveTran Connector
-What would be different if you used Fivetran?
 If Fivetran were involved:
 
-Fivetran handles ingestion
-It pulls data from APIs, databases, SaaS apps, etc., and automatically creates raw tables in your warehouse (e.g., Snowflake or BigQuery).
-No need to manually load CSVs.
+Fivetran handles ingestion and skips the upload stage I did with the `.csv` into the `/seeds/` folder manually.   
+It pulls data directly from APIs, databases, SaaS apps, etc., and automatically creates raw tables in your warehouse (e.g., Snowflake or BigQuery).   
 
-You’d still build stg_ models in dbt
+You’d still build stg_models in dbt. You would replace `{{ ref('.csv_filename')}}` with `{{ source('fivetran_schema_name', 'fivetran_table_name')}}`
 Even though the raw tables come from Fivetran, you'd still do:
-
-sql
-Copy
-Edit
-select
+```sql
+SELECT
   id,
   cast(timestamp as timestamp) as transaction_time,
   ...
-from {{ source('fivetran_schema', 'transactions_table') }}
-So instead of ref(), you’d use source() to access Fivetran tables.
+FROM {{ source('fivetran_schema', 'transactions_table') }}
+```
+So instead of `ref()`, you’d use `source()` to access Fivetran tables.
 
-🧠 The learning here:
-Seeds (CSV) mimic how you'd work with actual ingested data.
+#### 3.3.1 The learning here
+Seeds (`.csv`) mimic how I'd work with actual ingested data into dbt.
 
 Staging models are where you build a clean interface for the rest of your data pipeline.
 
 If you replaced seeds with Fivetran, your pipeline design would be the same, just the data ingestion part would be automated.
+
+- Use `source()` for raw external tables (usually not managed by dbt).
+
+- Use `ref()` for anything dbt manages (`seeds`, `models`).
+
+Always have a staging model to clean/cast/prepare messy data before your `fact/dim` models.
+
+So for a messy `.csv` loaded as a dbt seed, it’s totally fine to `ref()` it, but your staging model should do the cleaning!
+
 
