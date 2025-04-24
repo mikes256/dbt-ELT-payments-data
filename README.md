@@ -127,3 +127,70 @@ Orchestration	Airflow	Automate & schedule pipeline steps
 Version Control	Git/GitHub	Manage codebase and collaboration
 BI/Analytics	Metabase / Superset	Visualize KPIs or dashboards
 ```
+
+
+# What did I do?
+Back testing is so important for continuous learning. Similar to trading I need to know the why as to what I am doing.
+
+## 1. Loading `.csv` seed file into `dbt_project/seeds` dir
+I loaded a static `.csv` file into the dbt_project/seeds folder. Seeds allows me to load in static data such as `.csv`, configs, mapping tables and dummy inputs.     
+I can then run `dbt seed` to run activate the `.csv` file and then this `dbt seed` deposits the `.csv` into my duckdb warehouse for transformation. This is the *Extract* & *Load* in *'ELT'*. 
+
+## 2. Running `dbt seed` command and creating models
+I had an issue locating the `dbt_project.yml` file. ChatGPT'd for a solution but took a while, I think it looks in your pc root dir and tries to find `.dbt/dbt_project.yml`
+After running the command `dbt seed`, I can then create in my `dbt_project/models/stg_transaction.sql`
+
+## 3. Models/Staging_Transaction.SQL
+This is to reference the seed file into a clean dbt like sql file. This then allows me to model the data where the main transformation takes place. So the syntax in jinja looks like:
+```csharp
+SELECT * FROM 
+{{ ref('your_csv_name_without_csv_extension') }}
+```
+### 3.1 Staging Layer Seeds
+This is part of the staging layer in dbt. `seeds/` in dbt is like a raw data tables folder. They are loaded into the linked warehouse once I run `dbt seed`.  
+
+### 3.2 stg_transactions.sql
+
+This model selects from the seed table and:
+- Renames/standardises columns
+
+- Casts data types
+
+- Filters out test rows or bad data
+
+- Adds basic transformations
+
+- This is called staging, and it makes your raw data ready to be used in downstream models like fct_payments or dim_users.
+     
+
+So ultimately:
+- You’re turning unstructured/semi-clean data into a clean, reliable source layer that the rest of your models can trust.
+
+### 3.3 FiveTran Connector
+What would be different if you used Fivetran?
+If Fivetran were involved:
+
+Fivetran handles ingestion
+It pulls data from APIs, databases, SaaS apps, etc., and automatically creates raw tables in your warehouse (e.g., Snowflake or BigQuery).
+No need to manually load CSVs.
+
+You’d still build stg_ models in dbt
+Even though the raw tables come from Fivetran, you'd still do:
+
+sql
+Copy
+Edit
+select
+  id,
+  cast(timestamp as timestamp) as transaction_time,
+  ...
+from {{ source('fivetran_schema', 'transactions_table') }}
+So instead of ref(), you’d use source() to access Fivetran tables.
+
+🧠 The learning here:
+Seeds (CSV) mimic how you'd work with actual ingested data.
+
+Staging models are where you build a clean interface for the rest of your data pipeline.
+
+If you replaced seeds with Fivetran, your pipeline design would be the same, just the data ingestion part would be automated.
+

@@ -3,12 +3,15 @@ pymnts_elt_dbt:
   outputs:
     dev:
       type: duckdb
-      path: dev.duckdb
+      path: /workspaces/dbt-ELT-payments-data/pymnts_elt_dbt/pymnts.duckdb
       threads: 1
 
     prod:
       type: duckdb
-      path: prod.duckdb
+      path: ./dbt.duckdb
       threads: 4
 
   target: dev
+
+  
+
