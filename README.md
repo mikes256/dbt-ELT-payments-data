@@ -21,36 +21,36 @@ Use Python scripts to call the API (e.g., payments data)
 Load raw CSV/JSON data directly into Supabase raw schema tables
 Example tables:
 
-raw.users
+```raw.users```
 
-raw.transactions
+```raw.transactions```
 
-raw.merchants
+``raw.merchants``
 
-raw.cards
+``raw.cards``
 
 2. Transformation Layer (dbt Models in Supabase)
 Create a separate schema for cleaned/staged data: e.g., stg
 
 dbt models to clean, standardize, and enrich the raw data:
 
-stg_users (normalize names, fix types)
+``stg_users`` (normalize names, fix types)
 
-stg_transactions (filter test data, fix nulls)
+``stg_transactions`` (filter test data, fix nulls)
 
-stg_merchants, stg_cards
+``stg_merchants``, ``stg_cards``
 
 More complex models for business logic:
 
-dim_users (customer profiles)
+``dim_users`` (customer profiles)
 
-dim_merchants (merchant categories, locations)
+``dim_merchants`` (merchant categories, locations)
 
-fct_payments (fact table for payments with metadata)
+``fct_payments`` (fact table for payments with metadata)
 
-fct_failed_transactions (declined or suspicious payments)
+``fct_failed_transactions`` (declined or suspicious payments)
 
-int_user_daily_balances (intermediate balances)
+``int_user_daily_balances`` (intermediate balances)
 
 3. Testing & Documentation (dbt)
 Add dbt tests (not_null, unique, accepted_values)
@@ -80,9 +80,9 @@ Connect dbt to your Supabase DB (Postgres connection details)
 
 Scaffold models:
 
-models/stg/stg_users.sql
+``models/stg/stg_users.sql``
 
-models/stg/stg_transactions.sql
+``models/stg/stg_transactions.sql``
 
 etc.
 
