@@ -10,5 +10,3 @@ def read_seed_csv():
 if __name__ == '__main__':
     read_seed_csv()
 
-
-

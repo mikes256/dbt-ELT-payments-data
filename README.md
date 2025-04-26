@@ -204,4 +204,3 @@ I can now query the seed data and add data transformation to this modelling step
 
 ## 5. `dbt_project/target/run/` View seeds & models
 This dir path will enable you to view the result of the `dbt run` by giving you a display of the raw sql used to create the file.
-
