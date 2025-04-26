@@ -197,5 +197,11 @@ If you replaced seeds with Fivetran, your pipeline design would be the same, jus
 Always have a staging model to clean/cast/prepare messy data before your `fact/dim` models.
 
 So for a messy `.csv` loaded as a dbt seed, it’s totally fine to `ref()` it, but your staging model should do the cleaning!
+## 4. `dbt seed` command
+Running this command (remember if I was using Fivetran it would be ``{{ source('schema', 'table') }}``) pulls data from the `dbt_project/seeds` folder and pushes it into the data warehouse. 
 
+I can now query the seed data and add data transformation to this modelling step.
+
+## 5. `dbt_project/target/run/` View seeds & models
+This dir path will enable you to view the result of the `dbt run` by giving you a display of the raw sql used to create the file.
 

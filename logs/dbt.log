@@ -126,3 +126,51 @@ IndexError: list index out of range
 [0m12:44:35.686924 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f988006cb00>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f987ff21b20>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f98800acbf0>]}
 [0m12:44:35.687523 [debug] [MainThread]: Flushing usage events
 [0m12:44:36.008217 [debug] [MainThread]: An error was encountered while trying to flush usage events
+[0m19:03:08.658731 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7aedeb29deb0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7aedeacc2f00>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7aedead95f40>]}
+
+
+============================== 19:03:08.664099 | fe3e175b-6f27-4a30-b73e-e7257b9fc360 ==============================
+[0m19:03:08.664099 [info ] [MainThread]: Running with dbt=1.9.4
+[0m19:03:08.665160 [debug] [MainThread]: running dbt with arguments {'printer_width': '80', 'indirect_selection': 'eager', 'log_cache_events': 'False', 'write_json': 'True', 'partial_parse': 'True', 'cache_selected_only': 'False', 'profiles_dir': '/workspaces/dbt-ELT-payments-data', 'fail_fast': 'False', 'version_check': 'True', 'log_path': 'logs', 'warn_error': 'None', 'debug': 'False', 'use_colors': 'True', 'use_experimental_parser': 'False', 'empty': 'False', 'quiet': 'False', 'no_print': 'None', 'warn_error_options': 'WarnErrorOptions(include=[], exclude=[])', 'introspect': 'True', 'log_format': 'default', 'invocation_command': 'dbt run', 'target_path': 'None', 'static_parser': 'True', 'send_anonymous_usage_stats': 'True'}
+[0m19:03:08.665979 [error] [MainThread]: Encountered an error:
+Runtime Error
+  No dbt_project.yml found at expected path /workspaces/dbt-ELT-payments-data/dbt_project.yml
+  Verify that each entry within packages.yml (and their transitive dependencies) contains a file named dbt_project.yml
+  
+[0m19:03:08.668227 [debug] [MainThread]: Resource report: {"command_name": "run", "command_success": false, "command_wall_clock_time": 0.060872108, "process_in_blocks": "86552", "process_kernel_time": 0.162345, "process_mem_max_rss": "92116", "process_out_blocks": "16", "process_user_time": 1.39139}
+[0m19:03:08.668814 [debug] [MainThread]: Command `dbt run` failed at 19:03:08.668699 after 0.06 seconds
+[0m19:03:08.669330 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7aedebba1a00>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7aedeace84a0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7aedeae105f0>]}
+[0m19:03:08.669844 [debug] [MainThread]: Flushing usage events
+[0m19:03:09.015636 [debug] [MainThread]: An error was encountered while trying to flush usage events
+[0m19:25:11.772827 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7b019f5eaff0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7b01a166aba0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7b019f7a3da0>]}
+
+
+============================== 19:25:11.778358 | 0f169cc9-5095-49c4-b8b0-bbdb4c294eaf ==============================
+[0m19:25:11.778358 [info ] [MainThread]: Running with dbt=1.9.4
+[0m19:25:11.779213 [debug] [MainThread]: running dbt with arguments {'printer_width': '80', 'indirect_selection': 'eager', 'write_json': 'True', 'log_cache_events': 'False', 'partial_parse': 'True', 'cache_selected_only': 'False', 'profiles_dir': '/workspaces/dbt-ELT-payments-data', 'debug': 'False', 'fail_fast': 'False', 'log_path': 'logs', 'version_check': 'True', 'warn_error': 'None', 'use_colors': 'True', 'use_experimental_parser': 'False', 'no_print': 'None', 'quiet': 'False', 'empty': 'None', 'log_format': 'default', 'invocation_command': 'dbt seed', 'introspect': 'True', 'warn_error_options': 'WarnErrorOptions(include=[], exclude=[])', 'target_path': 'None', 'static_parser': 'True', 'send_anonymous_usage_stats': 'True'}
+[0m19:25:11.779869 [error] [MainThread]: Encountered an error:
+Runtime Error
+  No dbt_project.yml found at expected path /workspaces/dbt-ELT-payments-data/dbt_project.yml
+  Verify that each entry within packages.yml (and their transitive dependencies) contains a file named dbt_project.yml
+  
+[0m19:25:11.782613 [debug] [MainThread]: Resource report: {"command_name": "seed", "command_success": false, "command_wall_clock_time": 0.061252017, "process_in_blocks": "43248", "process_kernel_time": 0.142436, "process_mem_max_rss": "92492", "process_out_blocks": "8", "process_user_time": 1.478529}
+[0m19:25:11.783223 [debug] [MainThread]: Command `dbt seed` failed at 19:25:11.783061 after 0.06 seconds
+[0m19:25:11.783886 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7b019f44dc10>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7b019f1c95b0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7b01a2ec3b00>]}
+[0m19:25:11.784425 [debug] [MainThread]: Flushing usage events
+[0m19:25:12.127279 [debug] [MainThread]: An error was encountered while trying to flush usage events
+[0m20:42:27.617471 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x721891189fa0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x72188f3a1670>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x72188f13cfe0>]}
+
+
+============================== 20:42:27.624408 | 097d909b-d705-4b33-a9eb-6a8ea406968e ==============================
+[0m20:42:27.624408 [info ] [MainThread]: Running with dbt=1.9.4
+[0m20:42:27.626016 [debug] [MainThread]: running dbt with arguments {'printer_width': '80', 'indirect_selection': 'eager', 'log_cache_events': 'False', 'write_json': 'True', 'partial_parse': 'True', 'cache_selected_only': 'False', 'profiles_dir': '/workspaces/dbt-ELT-payments-data', 'debug': 'False', 'warn_error': 'None', 'log_path': 'logs', 'version_check': 'True', 'fail_fast': 'False', 'use_colors': 'True', 'use_experimental_parser': 'False', 'empty': 'None', 'quiet': 'False', 'no_print': 'None', 'warn_error_options': 'WarnErrorOptions(include=[], exclude=[])', 'static_parser': 'True', 'introspect': 'True', 'invocation_command': 'dbt seed', 'target_path': 'None', 'log_format': 'default', 'send_anonymous_usage_stats': 'True'}
+[0m20:42:27.626869 [error] [MainThread]: Encountered an error:
+Runtime Error
+  No dbt_project.yml found at expected path /workspaces/dbt-ELT-payments-data/dbt_project.yml
+  Verify that each entry within packages.yml (and their transitive dependencies) contains a file named dbt_project.yml
+  
+[0m20:42:27.628895 [debug] [MainThread]: Resource report: {"command_name": "seed", "command_success": false, "command_wall_clock_time": 0.066770785, "process_in_blocks": "86584", "process_kernel_time": 0.147194, "process_mem_max_rss": "92272", "process_out_blocks": "16", "process_user_time": 1.334897}
+[0m20:42:27.629480 [debug] [MainThread]: Command `dbt seed` failed at 20:42:27.629369 after 0.07 seconds
+[0m20:42:27.629950 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x721891293110>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x72188f66d0d0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x72188f66cfe0>]}
+[0m20:42:27.630684 [debug] [MainThread]: Flushing usage events
+[0m20:42:28.004788 [debug] [MainThread]: An error was encountered while trying to flush usage events
