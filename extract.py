@@ -8,5 +8,6 @@ def read_seed_csv():
     print(df.sample(3))
 
 if __name__ == '__main__':
+    
     read_seed_csv()
 
