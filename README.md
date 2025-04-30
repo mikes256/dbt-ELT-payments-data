@@ -205,3 +205,57 @@ I can now query the seed data and add data transformation to this modelling step
 ## 5. `dbt_project/target/run/` View seeds & models
 This dir path will enable you to view the result of the `dbt run` by giving you a display of the raw sql used to create the file.
 
+## 6. Query the seed file and model file
+In a realdev environment I would be querying the data using Snowflake, GBigQuery or Amazon etc. But because I am doing this project locally, duckdb will suffice.
+
+Python script used:
+```python
+import duckdb 
+con = duckdb.connect('/workspaces/dbt-ELT-payments-data/pymnts_elt_dbt/pymnts.duckdb')
+result = con.execute("SELECT * FROM stg_transaction LIMIT 3").fetchdf()
+print(result)
+```
+
+### 6.1 Cleaner SQL GUI editor
+Entered the commands line by line below:
+```bash
+curl -L https://github.com/duckdb/duckdb/releases/download/v1.0.0/duckdb_cli-linux-amd64.zip -o duckdb_cli.zip
+unzip duckdb_cli.zip
+chmod +x duckdb
+sudo mv duckdb /usr/local/bin/
+duckdb 'name_of_dbt_project_'.duckdb
+```
+
+## 7. Start building intermediate or fact model
+Next I create higher level models which are closer to production.
+
+- Intermediate (`int_*`) models: combining or further transforming your staging models.
+- Fact (`fct_*`) models: final business-ready tables, e.g., `fct_transactions`, `fct_payments`.
+
+These would go in models/core/ or models/facts/, depending on your folder structure.
+
+***__note__***: if my project was large enough I would create `dim_*` (dimension) tables like:
+
+- `dim_users`
+- `dim_merchants`
+- `dim_products`
+
+| Stage          | Purpose                                                  | Example                    |
+|----------------|----------------------------------------------------------|----------------------------|
+| `stg_*`        | Clean column names, cast types, handle NULLs              | `stg_transaction`         |
+| `int_*`        | Join multiple `stg_*` together, add intermediate calcs    | `int_transaction`         |
+| `fct_*`        | Business facts, ready for dashboards, finance, analytics  | `fct_transactions`        |
+
+## 8. Create a `models/facts/fct_transaction`
+Next stage was to create a fact transactions table and `{{ ref(' ') }}` it from the stg_transaction.    
+In a real world example there could be `dim_*` for dimesions table.   
+But ultimately, I would do further transformation in the `models/intermediate/int_*` and reference the `models/stg_*` and even further transformation in the `models/facts/fct_*` and reference the `models/intermediate/int_*`.
+
+Reminder in a real company the structure would appear like this:
+
+`models/stg_*` = lightly cleaned raw data
+
+`models/intermediate/int_*` = enriched/combined data
+
+`models/facts/fct_*` = final facts for business reporting (finance, operations, analytics)
+
