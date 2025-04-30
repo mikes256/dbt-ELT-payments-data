@@ -1,0 +1,21 @@
+version: 2
+
+models:
+  - name: fct_transation
+    description: "Fact table containing cleaned, completed transactions"
+    columns:
+      - name: step
+        tests:
+          - not_null
+      - name: type
+        tests:
+          - not_null
+          - accepted_values:
+              values: [CASH_OUT, TRANSFER, DEBIT, CASH_IN, PAYMENT] 
+      - name: nameOrig
+        tests:
+          - not_null
+          - unique
+      - name: nameDest
+        tests:
+          - not_null
