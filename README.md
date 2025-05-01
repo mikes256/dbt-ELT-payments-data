@@ -115,16 +115,15 @@ Version Control	Git/GitHub	Manage codebase and collaboration
 BI/Analytics	Metabase / Superset	Visualize KPIs or dashboards
 ```
 
-```
 ![](https://logowik.com/content/uploads/images/csv-file-format8052.jpg)
 
-##### ![](https://www.hibob.com/wp-content/uploads/fivetran-logo-blue-rgb-2021-08-03-1.png)
-##### ![](https://www.inovex.de/wp-content/uploads/Bildschirm%C2%ADfoto-2023-05-11-um-12.55.59.png)
+![](https://www.hibob.com/wp-content/uploads/fivetran-logo-blue-rgb-2021-08-03-1.png)
+![](https://www.inovex.de/wp-content/uploads/Bildschirm%C2%ADfoto-2023-05-11-um-12.55.59.png)
 ![](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxHAqB0W_61zuIGVMiU6sEeQyTaw-9xwiprw&s)
 ![](https://optim.tildacdn.one/tild6238-3035-4335-a333-306335373139/-/resize/824x/-/format/webp/IMG_3349.jpg.webp)
 ![](https://upload.wikimedia.org/wikipedia/commons/d/de/AirflowLogo.png)
 ![](https://miro.medium.com/v2/resize:fit:1125/1*E-TJsd6C1rwWMiiLJt5xxA.png)
-```
+
 
 # What did I do?
 Back testing is so important for continuous learning. Similar to trading I need to know the why as to what I am doing.
