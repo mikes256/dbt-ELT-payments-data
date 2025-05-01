@@ -128,9 +128,21 @@ Version Control	Git/GitHub	Manage codebase and collaboration
 BI/Analytics	Metabase / Superset	Visualize KPIs or dashboards
 ```
 
+```
+![](https://logowik.com/content/uploads/images/csv-file-format8052.jpg)
+
+##### ![](https://www.hibob.com/wp-content/uploads/fivetran-logo-blue-rgb-2021-08-03-1.png)
+##### ![](https://www.inovex.de/wp-content/uploads/Bildschirm%C2%ADfoto-2023-05-11-um-12.55.59.png)
+![](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxHAqB0W_61zuIGVMiU6sEeQyTaw-9xwiprw&s)
+![](https://optim.tildacdn.one/tild6238-3035-4335-a333-306335373139/-/resize/824x/-/format/webp/IMG_3349.jpg.webp)
+![](https://upload.wikimedia.org/wikipedia/commons/d/de/AirflowLogo.png)
+![](https://miro.medium.com/v2/resize:fit:1125/1*E-TJsd6C1rwWMiiLJt5xxA.png)
+```
 
 # What did I do?
 Back testing is so important for continuous learning. Similar to trading I need to know the why as to what I am doing.
+
+![](https://media.licdn.com/dms/image/v2/D4D12AQGdzi96ie3b5A/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1662570624498?e=2147483647&v=beta&t=qkcMpqgnYhJb-JbpcLn-5HNCThubQ2yTiqrgZlvaBOs)
 
 ## 1. Loading `.csv` seed file into `dbt_project/seeds` dir
 I loaded a static `.csv` file into the dbt_project/seeds folder. Seeds allows me to load in static data such as `.csv`, configs, mapping tables and dummy inputs.     
@@ -167,6 +179,7 @@ So ultimately:
 - You’re turning unstructured/semi-clean data into a clean, reliable source layer that the rest of your models can trust.
 
 ### 3.3 FiveTran Connector
+![](https://cdn.prod.website-files.com/6130fa1501794e37c21867cf/619195d4078138631a197fea_619030308ec46f1a4b39143b_2106_Fivetran_dbt_packages_BlogCard.png)
 If Fivetran were involved:
 
 Fivetran handles ingestion and skips the upload stage I did with the `.csv` into the `/seeds/` folder manually.   
@@ -202,6 +215,7 @@ Running this command (remember if I was using Fivetran it would be ``{{ source('
 
 I can now query the seed data and add data transformation to this modelling step.
 
+![](https://miro.medium.com/v2/resize:fit:1372/format:webp/0*MzFp1-JlToLc-2-w)
 ## 5. `dbt_project/target/run/` View seeds & models
 This dir path will enable you to view the result of the `dbt run` by giving you a display of the raw sql used to create the file.
 
@@ -247,6 +261,7 @@ These would go in models/core/ or models/facts/, depending on your folder struct
 | `fct_*`        | Business facts, ready for dashboards, finance, analytics  | `fct_transactions`        |
 
 ## 8. Create a `models/facts/fct_transaction`
+![dd](https://assets-global.website-files.com/6064b31ff49a2d31e0493af1/642d766f7dc50a6d85ecdaef_dbt_data_model%401%20(1).jpg)
 Next stage was to create a fact transactions table and `{{ ref(' ') }}` it from the stg_transaction.    
 In a real world example there could be `dim_*` for dimesions table.   
 But ultimately, I would do further transformation in the `models/intermediate/int_*` and reference the `models/stg_*` and even further transformation in the `models/facts/fct_*` and reference the `models/intermediate/int_*`.
@@ -259,3 +274,63 @@ Reminder in a real company the structure would appear like this:
 
 `models/facts/fct_*` = final facts for business reporting (finance, operations, analytics)
 
+## 9. `dbt test`
+To ensure my models are in fact water-tight another step that is taken is the testing stage. Here the goal is to test data quality. This replaces the need for example in python unit tests where you can isolate your code and test individual functions or modules to ensure everything is working as it should.   
+The main difference with .py unittest/pytest is you create a fake test based on a function from a module.     
+dbt you test your actual models to ensure they work and flow as they should.
+
+![alt image](https://www.wikihow.com/images/thumb/5/5d/Open-a-Tight-Jar-Step-2-Version-3.jpg/550px-nowatermark-Open-a-Tight-Jar-Step-2-Version-3.jpg)
+
+### 9.1. Two tests generic test and customer sql test
+
+Generic Tests (built-in, YAML-based)
+
+Custom Tests (SQL-based for complex logic)
+
+There are other generic tests:
+```yml
+accepted_values: checks if column values are within a specific list
+
+relationships: ensures foreign key relationships exist between models
+```
+### 9.1.1. Generic Tests
+I need to update my yaml file for generic tests. By only adding the necessary columns from my models I can test the most important inputs. 
+
+Tests should cover:
+
+- Should be unique and/or not null
+- Foreign key for joins
+- Time-based logic e.g. date_time
+
+I had to create a `schema.yml` file which included the necessities I wanted to test. Here is the `schema.yml` file, heads up in needs to remain in the same dir as the `.sql` I am testing.
+```yml
+version: 2
+
+models:
+  - name: fct_transation
+    description: "Fact table containing cleaned, completed transactions"
+    columns:
+      - name: step
+        tests:
+          - not_null
+      - name: type
+        tests:
+          - not_null
+          - accepted_values:
+              values: [CASH_OUT, TRANSFER, DEBIT, CASH_IN, PAYMENT]
+      - name: nameOrig
+        tests:
+          - not_null
+          - unique
+      - name: nameDest
+        tests:
+          - not_null
+```
+__models/name__ == stg_*/int_*/dim_*/fct_* table name without the .sql     
+**models/description** == the table I am testing, any description associated    
+__models/columns__ == all columns I am testing    
+__models/columns/name__ == column name I am testing    
+__models/columns/tests__ == the type of generic test
+
+### 9.1.2. run `dbt test`
+This will activate the test and tell you what passes, failed etc.
