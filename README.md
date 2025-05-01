@@ -1,17 +1,4 @@
 # dbt-ELT-payments-data
-Payments data ELT tool with dbt
-
-```csharp
-[API]
-     ↓
-[Python Script or dbt Seed]
-     ↓
-[Supabase (Postgres DB)]
-     ↓
-[dbt Models]
-     ↓
-[Metabase or Supabase UI for Visualization]
-```
 
 # 🔐 Payments Data ELT Project (Supabase + dbt + API)
 Project Outline
@@ -128,16 +115,15 @@ Version Control	Git/GitHub	Manage codebase and collaboration
 BI/Analytics	Metabase / Superset	Visualize KPIs or dashboards
 ```
 
-```
 ![](https://logowik.com/content/uploads/images/csv-file-format8052.jpg)
 
-##### ![](https://www.hibob.com/wp-content/uploads/fivetran-logo-blue-rgb-2021-08-03-1.png)
-##### ![](https://www.inovex.de/wp-content/uploads/Bildschirm%C2%ADfoto-2023-05-11-um-12.55.59.png)
+![](https://www.hibob.com/wp-content/uploads/fivetran-logo-blue-rgb-2021-08-03-1.png)
+![](https://www.inovex.de/wp-content/uploads/Bildschirm%C2%ADfoto-2023-05-11-um-12.55.59.png)
 ![](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxHAqB0W_61zuIGVMiU6sEeQyTaw-9xwiprw&s)
 ![](https://optim.tildacdn.one/tild6238-3035-4335-a333-306335373139/-/resize/824x/-/format/webp/IMG_3349.jpg.webp)
 ![](https://upload.wikimedia.org/wikipedia/commons/d/de/AirflowLogo.png)
 ![](https://miro.medium.com/v2/resize:fit:1125/1*E-TJsd6C1rwWMiiLJt5xxA.png)
-```
+
 
 # What did I do?
 Back testing is so important for continuous learning. Similar to trading I need to know the why as to what I am doing.
@@ -334,3 +320,53 @@ __models/columns/tests__ == the type of generic test
 
 ### 9.1.2. run `dbt test`
 This will activate the test and tell you what passes, failed etc.
+
+## 10. dimension dim models
+In a star or snowflake schema, I would have a central fact table then multiple dimsension tables that join to the fact. Below is a really good example of this.
+![](https://sdmntpritalynorth.oaiusercontent.com/files/00000000-dce0-6246-8ca0-5b37355f2321/raw?se=2025-05-01T17%3A21%3A36Z&sp=r&sv=2024-08-04&sr=b&scid=7800342a-4495-5311-8e6e-3c0d35ac7064&skoid=06e05d6f-bdd9-4a88-a7ec-2c0a779a08ca&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-05-01T07%3A29%3A36Z&ske=2025-05-02T07%3A29%3A36Z&sks=b&skv=2024-08-04&sig=L0/CTM5XT3UQksKaVzxFMECdkvmyvofj/%2Bk1TKPRwO4%3D)
+
+Example dim tables:
+- Customers (`dim_customers`)
+
+- Products (``dim_products``)
+
+- Employees (`dim_employees`)
+
+- Dates (`dim_date`)
+
+These tables:
+
+- Contain descriptive attributes that help support the fact table (e.g. customer name, age, region)
+
+- Tend to be slow-changing (they don't update as often as fact tables like a `fct_transaction` which will always have new transactions)
+
+- Are used to enrich fact tables, helping end users explore and analyse data in a business-friendly way
+
+## 11. Documentation
+Documentation in dbt helps make my code more readable and accessible. Documentation can help answer questions without you having to be present. Good documentation speaks for itself.   
+You can also record metadata, tests and descriptions so even if I were to look in the future I would understand what is going on.
+
+### 11.1 Documentation `schema.yml`
+In the `models/fct` folder there is the schema file. This needs to be updated with `description: ` so each column name has a description of what it is intended to do. This way anyone reading the code can immediately understand. 
+
+This is the command to run to see the documentation:
+```bash
+dbt docs generate
+dbt docs serve
+```
+
+## 12. Stakeholer involvement next steps
+At this stage I would want to augment the data to tailor it towards my stakeholders needs. For example, below are a few cases a stakeholder could want:
+- Build aggregated models (e.g., daily transaction volumes)
+
+- Create reporting views tailored to stakeholders
+
+- Join it with dimension tables (if you had any) for richer analytics
+
+- Feed the output into dashboards (e.g., via BI tools)
+
+##  12.1 `dbt run`/`dbt test`/`dbt docs generate`/`dbt docs serve`
+At this stage you continue creating models from you `fct_transaction` table to refine the requirements. For example, a stakeholder could ask for the total number of transactions during a certain period.  
+Or they could ask for a click view funnel analysis to be presented in a Tableau.
+
+# End
