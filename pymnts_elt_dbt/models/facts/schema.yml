@@ -7,15 +7,19 @@ models:
       - name: step
         tests:
           - not_null
+        description: static index of 1 and only the nbr 1
       - name: type
         tests:
           - not_null
           - accepted_values:
               values: [CASH_OUT, TRANSFER, DEBIT, CASH_IN, PAYMENT] 
+        description: type of transaction (transaction_type) from a customer
       - name: nameOrig
         tests:
           - not_null
           - unique
+        description: unique recipent id for every new transaction
       - name: nameDest
         tests:
           - not_null
+        description: non-unique destination id for each transaction. two different tranaction can have one destination

@@ -1,0 +1,25 @@
+version: 2
+
+models:
+  - name: final_transaction_summary
+    description: "6IX8 - Analytical table for senior data analysts to query off and use for dashboard"
+    columns:
+      - name: total_amount
+        tests:
+          - not_null
+        description: total sum of all amounts within each transaction type
+      - name: type
+        tests:
+          - not_null
+          - accepted_values:
+              values: [CASH_OUT, TRANSFER, DEBIT, CASH_IN, PAYMENT] 
+        description: type of transaction (transaction_type) from a customer
+      - name: minimum_amount
+        tests:
+          - not_null
+        description: minimum/lowest amount of all amounts within each transaction type
+      
+      - name: maximum_amount
+        tests:
+          - not_null
+        description: maximum/highest amount of all amounts within each transaction type
