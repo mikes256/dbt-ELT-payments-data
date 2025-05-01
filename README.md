@@ -1,119 +1,6 @@
 # dbt-ELT-payments-data
 
-# 🔐 Payments Data ELT Project (Supabase + dbt + API)
-Project Outline
-1. Data Ingestion (Extract & Load)
-Use Python scripts to call the API (e.g., payments data)
 
-Load raw CSV/JSON data directly into Supabase raw schema tables
-Example tables:
-
-```raw.users```
-
-```raw.transactions```
-
-``raw.merchants``
-
-``raw.cards``
-
-2. Transformation Layer (dbt Models in Supabase)
-Create a separate schema for cleaned/staged data: e.g., stg
-
-dbt models to clean, standardize, and enrich the raw data:
-
-``stg_users`` (normalize names, fix types)
-
-``stg_transactions`` (filter test data, fix nulls)
-
-``stg_merchants``, ``stg_cards``
-
-More complex models for business logic:
-
-``dim_users`` (customer profiles)
-
-``dim_merchants`` (merchant categories, locations)
-
-``fct_payments`` (fact table for payments with metadata)
-
-``fct_failed_transactions`` (declined or suspicious payments)
-
-``int_user_daily_balances`` (intermediate balances)
-
-3. Testing & Documentation (dbt)
-Add dbt tests (not_null, unique, accepted_values)
-
-Add descriptions and documentation for your models
-
-4. Visualization & Analytics
-Connect Supabase or export data to a BI tool (Metabase, Superset, etc.)
-
-Build dashboards to track KPIs like transaction volume, failed payment rate, retention
-
-Step-by-Step Plan
-Step 1: Set up Supabase project
-Create project in Supabase
-
-Create schemas: raw, stg, int, dim, fct
-
-Create raw tables matching API data structure (users, transactions, merchants, cards)
-
-Step 2: Write Python ETL script
-Extract data from API (using requests)
-
-Load raw data into Supabase tables (use psycopg2 or supabase-py client)
-
-Step 3: Initialize dbt project
-Connect dbt to your Supabase DB (Postgres connection details)
-
-Scaffold models:
-
-``models/stg/stg_users.sql``
-
-``models/stg/stg_transactions.sql``
-
-etc.
-
-Step 4: Build and run dbt models
-Write transformations to clean and standardize raw data
-
-Run dbt run to create tables/views in Supabase
-
-Add tests: dbt test
-
-Step 5: Build intermediate & final models
-Build fact and dimension tables based on cleaned data
-
-Create business logic models (e.g., user balances, failed transactions)
-
-Step 6: Document and test
-Add model descriptions, YAML schema tests
-
-Run dbt docs generate and view docs
-
-Step 7: Connect BI tool (optional)
-Connect Metabase or Superset to Supabase
-
-Build dashboards for KPIs and insights
-
-Optional Advanced Steps
-Automate ETL pipeline with Apache Airflow (schedule API extraction + dbt runs)
-
-Use Fivetran if you want a no-code connector for APIs instead of Python scripts
-
-Add dbt snapshots to track slowly changing dimensions (e.g., user profile changes)
-
-```csharp
-🧱 Stack Breakdown:
-
-Layer	Tool	Purpose
-Source	Public API / Mock API	Simulated fintech data
-Ingestion	Python script / Fivetran	Bring data into your data warehouse
-Warehouse	Supabase / Snowflake	Where raw and transformed data lives
-Transform	dbt	Clean, model, and create KPIs
-Orchestration	Airflow	Automate & schedule pipeline steps
-Version Control	Git/GitHub	Manage codebase and collaboration
-BI/Analytics	Metabase / Superset	Visualize KPIs or dashboards
-```
 
 ![](https://logowik.com/content/uploads/images/csv-file-format8052.jpg)
 
@@ -145,7 +32,7 @@ SELECT * FROM
 {{ ref('your_csv_name_without_csv_extension') }}
 ```
 ### 3.1 Staging Layer Seeds
-This is part of the staging layer in dbt. `seeds/` in dbt is like a raw data tables folder. They are loaded into the linked warehouse once I run `dbt seed`.  
+This is part of the staging layer in dbt. `dbt_project/seeds/` in dbt is like a raw data tables folder. They are loaded into the linked warehouse once I run `dbt seed`.  
 
 ### 3.2 stg_transactions.sql
 
@@ -171,7 +58,7 @@ If Fivetran were involved:
 Fivetran handles ingestion and skips the upload stage I did with the `.csv` into the `/seeds/` folder manually.   
 It pulls data directly from APIs, databases, SaaS apps, etc., and automatically creates raw tables in your warehouse (e.g., Snowflake or BigQuery).   
 
-You’d still build stg_models in dbt. You would replace `{{ ref('.csv_filename')}}` with `{{ source('fivetran_schema_name', 'fivetran_table_name')}}`
+You’d still build stg_models in dbt. You would replace `{{ ref('.csv_filename') }}` with `{{source('fivetran_schema_name', 'fivetran_table_name')}}`
 Even though the raw tables come from Fivetran, you'd still do:
 ```sql
 SELECT
@@ -250,15 +137,15 @@ These would go in models/core/ or models/facts/, depending on your folder struct
 ![dd](https://assets-global.website-files.com/6064b31ff49a2d31e0493af1/642d766f7dc50a6d85ecdaef_dbt_data_model%401%20(1).jpg)
 Next stage was to create a fact transactions table and `{{ ref(' ') }}` it from the stg_transaction.    
 In a real world example there could be `dim_*` for dimesions table.   
-But ultimately, I would do further transformation in the `models/intermediate/int_*` and reference the `models/stg_*` and even further transformation in the `models/facts/fct_*` and reference the `models/intermediate/int_*`.
+But ultimately, I would do further transformation in the `dbt_project/models/intermediate/int_*` and reference the `dbt_project/models/stg_*` and even further transformation in the `dbt_project/models/facts/fct_*` and reference the `dbt_project/models/intermediate/int_*`.
 
 Reminder in a real company the structure would appear like this:
 
-`models/stg_*` = lightly cleaned raw data
+`dbt_project/models/stg_*` = lightly cleaned raw data
 
-`models/intermediate/int_*` = enriched/combined data
+`dbt_project/models/intermediate/int_*` = enriched/combined data
 
-`models/facts/fct_*` = final facts for business reporting (finance, operations, analytics)
+`dbt_project/models/facts/fct_*` = final facts for business reporting (finance, operations, analytics)
 
 ## 9. `dbt test`
 To ensure my models are in fact water-tight another step that is taken is the testing stage. Here the goal is to test data quality. This replaces the need for example in python unit tests where you can isolate your code and test individual functions or modules to ensure everything is working as it should.   
@@ -278,6 +165,8 @@ There are other generic tests:
 accepted_values: checks if column values are within a specific list
 
 relationships: ensures foreign key relationships exist between models
+
+not null: checks if there are any null values
 ```
 ### 9.1.1. Generic Tests
 I need to update my yaml file for generic tests. By only adding the necessary columns from my models I can test the most important inputs. 
@@ -347,7 +236,7 @@ Documentation in dbt helps make my code more readable and accessible. Documentat
 You can also record metadata, tests and descriptions so even if I were to look in the future I would understand what is going on.
 
 ### 11.1 Documentation `schema.yml`
-In the `models/fct` folder there is the schema file. This needs to be updated with `description: ` so each column name has a description of what it is intended to do. This way anyone reading the code can immediately understand. 
+In the `dbt_project/models/fct` folder there is the schema file. This needs to be updated with `description: ` so each column name has a description of what it is intended to do. This way anyone reading the code can immediately understand. 
 
 This is the command to run to see the documentation:
 ```bash
